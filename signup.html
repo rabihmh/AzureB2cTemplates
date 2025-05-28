@@ -149,12 +149,15 @@
         #api .helpLink, #api .tooltipLink, 
         #api a[id$='_ver_but_help'], /* E.g., email_ver_but_help */
         #api .forgotPassword, #api .passwordReset {
+            display: none !important; /* Hidden as per request */
+            /* 
             display: block; 
-            font-size: 0.875rem; /* 14px */
+            font-size: 0.875rem; 
             color: #4fd1c5; 
             text-decoration: none;
             margin-top: 8px;
             text-align: right; 
+            */
         }
         #api .helpLink:hover, #api .tooltipLink:hover, 
         #api a[id$='_ver_but_help']:hover,
