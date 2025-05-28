@@ -21,7 +21,7 @@
             color: #e2e8f0;
         }
         .page-container { 
-            background: #2d3748; /* Slightly lighter card */
+            background: #2d3748;
             border-radius: 20px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
             width: 100%;
@@ -35,120 +35,211 @@
         }
         #api { 
             width: 100%;
-            flex-grow: 1; /* Allow #api to take available space */
+            flex-grow: 1;
             display: flex;
             flex-direction: column;
-            overflow-y: auto; /* Scrollbar appears on #api if content overflows */
+            overflow-y: auto;
             padding: 20px 30px 30px 30px;
+            box-sizing: border-box;
         }
         .custom-logo-container {
             padding: 30px 0 15px 0;
             text-align: center;
             background: rgba(255,255,255,0.03);
             border-bottom: 1px solid rgba(255,255,255,0.1);
+            flex-shrink: 0;
         }
         .custom-logo-container img {
             width: 60px; 
             height: 60px;
             object-fit: contain;
-            border-radius: 12px; /* Optional: if logo looks better with rounded corners */
+            border-radius: 12px;
         }
-        /* Azure B2C injected elements styling */
-        .intro h1 {
-            font-size: 1.75rem; /* 28px */
-            font-weight: 600;
-            color: #ffffff;
-            margin: 0 0 8px 0;
-            text-align: center;
-        }
-        .intro p {
-            color: #a0aec0; /* Lighter gray for subtitle */
-            font-size: 1rem; /* 16px */
-            margin: 0 0 28px 0;
-            text-align: center;
+
+        /* === B2C SPECIFIC STYLING WITHIN #api === */
+
+        /* B2C Introductory text */
+        #api div.intro p {
+            font-size: 0.9375rem; /* 15px */
+            color: #a0aec0;
+            margin: 0 0 24px 0;
+            text-align: left; /* As B2C usually does */
             line-height: 1.6;
         }
-        .entry {
+        /* Hide B2C's h1 if it injects one and we don't want it */
+        #api div.intro h1 {
+            display: none;
+        }
+
+        /* Remove bullet points and default list styling from B2C attribute lists */
+        #api ul, #api ol,
+        #api .attributeList ul, #api .attrEntry ul,
+        #api div[role="list"] {
+            list-style-type: none !important;
+            padding-left: 0 !important;
+            margin-left: 0 !important;
+        }
+        #api li,
+        #api .attributeList li, #api .attrEntry li,
+        #api div[role="listitem"] {
+            list-style: none !important;
+            padding-left: 0 !important;
+        }
+        /* Specific for some B2C structures that might create pseudo-bullets */
+        #api div[role="listitem"] > div:first-child::before {
+            content: none !important;
+            display: none !important;
+        }
+        
+        /* Container for a group of attributes */
+        #api .attributes {
             margin-bottom: 20px;
         }
-        .entry label {
-            color: #cbd5e0; /* Light gray label */
+
+        /* Styling for each form entry (label, input, helpers) */
+        #api .entry, #api .identity, 
+        #api .attributeList li, /* Covers B2C list item structure */
+        #api .attrEntry li, /* Another common B2C list item class */
+        #api .attributes > div, /* Direct div children of .attributes */
+        #api div[role="listitem"] /* ARIA list item */
+        {
+            margin-bottom: 22px;
+        }
+
+        #api .entry label, #api .identity label, 
+        #api .attributeList li label, #api .attrEntry li label,
+        #api .attributes > div label,
+        #api div[role="listitem"] label {
+            color: #cbd5e0;
             font-size: 0.9375rem; /* 15px */
             font-weight: 500;
             margin-bottom: 8px;
             display: block;
         }
-        .entry input[type="text"],
-        .entry input[type="email"],
-        .entry input[type="password"],
-        .entry input[type="tel"],
-        .entry select {
+
+        #api input[type="text"],
+        #api input[type="email"],
+        #api input[type="password"],
+        #api input[type="tel"],
+        #api select {
             width: 100%;
             padding: 14px 18px;
-            border: 1px solid #4a5568; /* Darker border */
+            border: 1px solid #4a5568;
             border-radius: 10px;
             font-size: 1rem;
-            background: #1a202c; /* Dark input background */
-            color: #e2e8f0; /* Light text */
-            transition: border-color 0.2s, box-shadow 0.2s;
+            background: #1a202c;
+            color: #e2e8f0;
+            transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
             font-family: 'Poppins', sans-serif;
+            box-sizing: border-box; /* Crucial for 100% width */
         }
-        .entry input:focus,
-        .entry select:focus {
+
+        #api input:focus, #api select:focus {
             outline: none;
             border-color: #4fd1c5; /* Teal accent */
-            background: #2d3748; /* Slightly lighter focus background */
+            background: #2d3748; 
             box-shadow: 0 0 0 3px rgba(79, 209, 197, 0.3);
         }
-        .entry input::placeholder {
-            color: #718096; /* Mid-gray placeholder */
+
+        #api input::placeholder {
+            color: #718096; 
         }
-        .buttons {
+
+        /* Helper links like "What is this?", "Forgot password?" */
+        #api .helpLink, #api .tooltipLink, 
+        #api a[id$='_ver_but_help'], /* E.g., email_ver_but_help */
+        #api .forgotPassword, #api .passwordReset {
+            display: block; 
+            font-size: 0.875rem; /* 14px */
+            color: #4fd1c5; 
+            text-decoration: none;
+            margin-top: 8px;
+            text-align: right; 
+        }
+        #api .helpLink:hover, #api .tooltipLink:hover, 
+        #api a[id$='_ver_but_help']:hover,
+        #api .forgotPassword:hover, #api .passwordReset:hover {
+            text-decoration: underline;
+        }
+        
+        /* Container for verification buttons (e.g. Send Code) */
+        #api .verificationButton {
+             margin-top: 10px;
+             margin-bottom: 10px;
+        }
+
+        /* General B2C Buttons (Continue, Send Code, Cancel etc.) */
+        #api .buttons, /* If B2C uses a .buttons div */
+        #api #divButtons /* Common B2C ID for button container */
+        {
             margin: 30px 0 10px 0;
             display: flex;
             flex-direction: column;
             gap: 14px;
         }
-        .buttons button,
-        .buttons input[type="submit"] {
+
+        #api #continue, #api #cancel, /* Standard B2C button IDs */
+        #api #identifierVerificationButton, /* Send/Verify code button */
+        #api input[type="submit"], #api button[type="submit"], /* General submit buttons */
+        #api .buttons button, #api #divButtons button, /* Buttons within known containers */
+        #api button.action_continue /* Another common B2C button class */
+        {
             width: 100%;
             padding: 15px 0;
-            border: none;
             border-radius: 10px;
             font-size: 1rem;
             font-weight: 600;
-            background: linear-gradient(90deg, #4fd1c5 0%, #38b2ac 100%); /* Teal gradient */
-            color: #1a202c; /* Dark text on button */
             cursor: pointer;
             transition: all 0.2s ease-in-out;
             letter-spacing: 0.5px;
+            box-sizing: border-box;
+            margin-top: 5px; /* Small top margin for standalone buttons */
+            margin-bottom: 5px;
         }
-        .buttons button:hover,
-        .buttons input[type="submit"]:hover {
+        
+        /* Primary action buttons */
+        #api #continue, 
+        #api #identifierVerificationButton,
+        #api input[type="submit"], #api button[type="submit"],
+        #api .buttons button:not(.secondary), #api #divButtons button:not(.secondary),
+        #api button.action_continue {
+            background: linear-gradient(90deg, #4fd1c5 0%, #38b2ac 100%);
+            color: #1a202c;
+            border: none;
+        }
+        #api #continue:hover, 
+        #api #identifierVerificationButton:hover,
+        #api input[type="submit"]:hover, #api button[type="submit"]:hover,
+        #api .buttons button:not(.secondary):hover, #api #divButtons button:not(.secondary):hover,
+        #api button.action_continue:hover {
             background: linear-gradient(90deg, #38b2ac 0%, #4fd1c5 100%);
             box-shadow: 0 5px 15px rgba(79, 209, 197, 0.2);
             transform: translateY(-2px);
         }
-        /* Styling for secondary buttons if B2C adds them (like a 'Cancel' button) */
-        .buttons button.secondary {
+
+        /* Secondary/Cancel buttons */
+        #api #cancel, 
+        #api .buttons button.secondary, #api #divButtons button.secondary {
              background: transparent;
              border: 1px solid #4a5568;
              color: #cbd5e0;
         }
-        .buttons button.secondary:hover {
+        #api #cancel:hover, 
+        #api .buttons button.secondary:hover, #api #divButtons button.secondary:hover {
             background: #4a5568;
             color: #ffffff;
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
 
-        .divider {
+        /* Divider (if B2C uses one or if we want to style our .divider class) */
+        #api .divider {
             margin: 28px 0;
             text-align: center;
             color: #718096;
-            font-size: 0.875rem; /* 14px */
+            font-size: 0.875rem; 
             position: relative;
         }
-        .divider::before, .divider::after {
+        #api .divider::before, #api .divider::after {
             content: '';
             display: inline-block;
             width: 35%;
@@ -157,79 +248,88 @@
             vertical-align: middle;
             margin: 0 10px;
         }
-        .error, .alert-error, .verificationErrorText {
+
+        /* Error messages and input error states */
+        #api .error.itemLevel, 
+        #api .error.pageLevel, /* B2C page-level error summary */
+        #api .errorTxt.error, /* Another B2C error text class */
+        #api .verificationErrorText /* Verification specific errors */
+        {
             background: rgba(229, 62, 62, 0.1);
-            color: #f56565; /* Red for errors */
+            color: #f56565; 
             padding: 12px 16px;
             border-radius: 8px;
             font-size: 0.9375rem;
             margin-bottom: 18px;
             border: 1px solid rgba(229, 62, 62, 0.3);
+            text-align: left;
         }
-        .alert-success {
+        
+        #api input.error, #api select.error { /* If B2C adds .error class to inputs */
+            border-color: #e53e3e !important; /* More prominent red border for error state */
+            background-color: rgba(229, 62, 62, 0.05) !important; 
+        }
+        #api input.error:focus, #api select.error:focus {
+            border-color: #e53e3e !important;
+            box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.3) !important; 
+        }
+
+        /* Success and Info messages */
+        #api .success, #api .alert-success {
             background: rgba(79, 209, 197, 0.1);
-            color: #4fd1c5; /* Teal for success */
+            color: #4fd1c5; 
             padding: 12px 16px;
             border-radius: 8px;
             font-size: 0.9375rem;
             margin-bottom: 18px;
             border: 1px solid rgba(79, 209, 197, 0.3);
+            text-align: left;
         }
-        .alert-info {
+        #api .working, #api .alert-info { /* B2C "working..." message */
             background: rgba(99, 179, 237, 0.1);
-            color: #63b3ed; /* Blue for info */
+            color: #63b3ed; 
             padding: 12px 16px;
             border-radius: 8px;
             font-size: 0.9375rem;
             margin-bottom: 18px;
             border: 1px solid rgba(99, 179, 237, 0.3);
+            text-align: left;
         }
-        .disclaimer {
-            font-size: 0.8125rem; /* 13px */
+        
+        /* Disclaimer and other links */
+        #api .disclaimer {
+            font-size: 0.8125rem; 
             color: #a0aec0;
             margin: 20px 0 0 0;
             text-align: center;
             line-height: 1.5;
         }
-        .disclaimer a {
+        #api .disclaimer a, #api .create a {
             color: #4fd1c5;
             text-decoration: none;
+            font-weight: 500;
         }
-        .disclaimer a:hover {
+        #api .disclaimer a:hover, #api .create a:hover {
             text-decoration: underline;
         }
-        .create {
+        #api .create { /* E.g. "Don't have an account? Sign up" */
             text-align: center;
             margin-top: 20px;
-        }
-        .create p {
             color: #a0aec0;
             font-size: 0.9375rem;
         }
-        .create a {
-            color: #4fd1c5;
-            text-decoration: none;
-            font-weight: 600;
+        #api .create a {
             margin-left: 5px;
         }
-        .create a:hover {
-            text-decoration: underline;
-        }
+
         /* Scrollbar styling for webkit browsers */
-        #api::-webkit-scrollbar {
-            width: 8px;
-        }
-        #api::-webkit-scrollbar-track {
-            background: #2d3748; 
-            border-radius: 10px;
-        }
-        #api::-webkit-scrollbar-thumb {
-            background: #4a5568;
-            border-radius: 10px;
-        }
-        #api::-webkit-scrollbar-thumb:hover {
-            background: #718096;
-        }
+        #api::-webkit-scrollbar { width: 8px; }
+        #api::-webkit-scrollbar-track { background: #2d3748; border-radius: 10px; }
+        #api::-webkit-scrollbar-thumb { background: #4a5568; border-radius: 10px; }
+        #api::-webkit-scrollbar-thumb:hover { background: #718096; }
+        
+        /* === END B2C SPECIFIC STYLING === */
+
         @media (max-width: 600px) {
             body {
                 padding: 0;
@@ -237,22 +337,39 @@
             .page-container {
                 max-width: 100vw;
                 height: 100vh;
-                max-height: 100vh;
+                max-height: 100vh; /* Ensure it doesn't exceed viewport */
+                min-height: 100vh; /* Ensure it takes full screen on mobile */
                 border-radius: 0;
                 border: none;
             }
             #api {
-                 padding: 15px 20px 20px 20px;
+                 padding: 20px 20px 30px 20px; /* Adjusted padding for mobile */
             }
             .custom-logo-container{
-                padding: 20px 0 10px 0;
+                padding: 25px 0 10px 0;
             }
-            .intro h1 {
-                font-size: 1.5rem;
+            #api div.intro p { /* Adjust intro text for mobile */
+                font-size: 0.875rem;
+                margin-bottom: 16px;
             }
-            .intro p {
+            #api .entry label, #api .identity label, 
+            #api .attributeList li label, #api .attrEntry li label {
+                font-size: 0.875rem; /* Slightly smaller labels on mobile */
+            }
+            #api input[type="text"],
+            #api input[type="email"],
+            #api input[type="password"],
+            #api input[type="tel"],
+            #api select {
+                padding: 12px 16px; /* Slightly smaller padding for inputs on mobile */
                 font-size: 0.9375rem;
-                margin-bottom: 20px;
+            }
+            #api #continue, #api #cancel, 
+            #api #identifierVerificationButton,
+            #api input[type="submit"], #api button[type="submit"], 
+            #api .buttons button, #api #divButtons button {
+                padding: 14px 0; /* Adjust button padding */
+                font-size: 0.9375rem;
             }
         }
     </style>
