@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Email - Meeza Dashboard</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #007bff; /* Blue background from screenshot */
+        }
+        
+        /* Azure B2C Form Styling */
+        #api {
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            animation: none !important;
+        }
+        
+        /* Hide Azure B2C default elements we don't need */
+        #api .intro {
+             display: none !important;
+        }
+
+        /* Custom heading if needed, B2C heading might be different for this step */
+        .custom-page-title {
+            font-size: 1.5rem; /* 24px */
+            font-weight: 600;
+            color: #374151; /* Tailwind gray-700 */
+            text-align: center;
+            margin-bottom: 1.5rem; /* 24px */
+        }
+
+        /* Generic icon styling (like the cube) */
+        .page-icon {
+            width: 4rem; /* 64px */
+            height: 4rem; /* 64px */
+            margin: 0 auto 1rem auto; /* Center icon and add margin below */
+            color: #D1D5DB; /* Tailwind gray-300 for a placeholder icon */
+        }
+        
+        /* Entry fields styling (to match signin.html and reset-password.html) */
+        #api .entry label,
+        #api .attrEntry label {
+            display: block;
+            margin-bottom: 0.625rem;
+            font-weight: 500;
+            color: #1C2434;
+            font-size: 0.875rem;
+        }
+        
+        #api .entry input[type="email"],
+        #api .attrEntry input.textInput[type="email"] {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            border: 1px solid #E0E0E0;
+            border-radius: 0.5rem;
+            background-color: #FFFFFF; /* White background for inputs on this page */
+            outline: none;
+            transition: border-color 0.2s, background-color 0.2s, box-shadow 0.2s;
+            font-size: 1rem;
+            color: #2D3748;
+            margin-bottom: 0.25rem;
+        }
+        
+        #api .entry input[type="email"]:focus,
+        #api .attrEntry input.textInput[type="email"]:focus {
+            border-color: #3B82F6; /* Blue focus from signin */
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        #api .entry input::placeholder,
+        #api .attrEntry input.textInput[type="email"]::placeholder {
+            color: #9CA3AF;
+        }
+
+        /* Error message styling (consistent) */
+        #api .error.itemLevel {
+            background-color: transparent;
+            border: none;
+            padding: 0.25rem 0 0 0;
+            margin-bottom: 0.5rem;
+            color: #C53030; 
+            font-size: 0.75rem;
+            display: none; 
+        }
+
+        #api .error.itemLevel.show {
+            display: block !important;
+        }
+        
+        /* Input error state styling */
+        #api .attrEntry .error.itemLevel.show + input.textInput[type="email"] {
+            border-color: #FC8181 !important; 
+            background-color: #FFF5F5 !important; 
+        }
+
+        #api .error.pageLevel {
+            background-color: #FED7D7;
+            border: 1px solid #FC8181;
+            border-radius: 0.375rem;
+            padding: 0.75rem 1rem;
+            margin-bottom: 1.5rem;
+            color: #C53030;
+            font-size: 0.875rem;
+        }
+        
+        /* Buttons */
+        #api .buttons {
+            margin-top: 1.5rem;
+        }
+        
+        /* Send verification code button */
+        #api button#continue, /* B2C often uses 'continue' for the primary action */
+        #api button.verificationButton { /* If B2C uses a specific class for send code */
+            width: 100%;
+            background-color: #2563EB; /* Tailwind blue-600, from screenshot */
+            color: white;
+            border: none;
+            padding: 0.75rem 1rem;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 0.75rem; /* Space between buttons */
+        }
+        
+        #api button#continue:hover,
+        #api button.verificationButton:hover {
+            background-color: #1D4ED8; /* Tailwind blue-700 */
+        }
+
+        /* Continue button (after code is sent, if B2C shows another one) or general submit */
+        #api button[type="submit"] {
+             width: 100%;
+            background-color: #E5E7EB; /* Tailwind gray-200, for secondary/disabled looking button */
+            color: #374151; /* Tailwind gray-700 */
+            border: 1px solid #D1D5DB; /* Tailwind gray-300 */
+            padding: 0.75rem 1rem;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        #api button[type="submit"]:hover {
+            background-color: #D1D5DB; /* Tailwind gray-300 */
+        }
+        
+        /* Cancel button (Back button) */
+        #api button#cancel {
+            width: auto; /* Allow it to be smaller */
+            background-color: transparent;
+            color: #6B7280; /* Tailwind gray-500 */
+            border: none;
+            padding: 0.5rem 0; /* Minimal padding */
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: color 0.2s;
+            display: flex; /* For icon alignment */
+            align-items: center;
+        }
+
+        #api button#cancel:hover {
+            color: #1F2937; /* Tailwind gray-800 */
+        }
+
+        #api button#cancel svg {
+            margin-right: 0.5rem;
+            width: 1rem; /* 16px */
+            height: 1rem; /* 16px */
+        }
+
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+    <!-- Company branding assets (Azure B2C will replace these) -->
+    <img data-tenant-branding-background="true" class="hidden" />
+    <img data-tenant-branding-logo="true" alt="Company Logo" class="hidden" />
+    
+    <div class="bg-white rounded-lg shadow-xl w-full max-w-md p-8 sm:p-10">
+        
+        <!-- Back/Cancel button (B2C might inject its own or we can have a static one if policy allows) -->
+        <!-- For B2C, usually the #cancel button is styled. If it doesn't render an icon, we can add via JS or just text -->
+        <div id="customCancelButtonContainer" class="mb-6">
+             <!-- B2C cancel button will be styled. If you need a static one and B2C doesn't provide #cancel here, then: -->
+             <!-- 
+             <button onclick="history.back()" class="flex items-center text-sm text-gray-600 hover:text-gray-800">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+                Cancel
+            </button> 
+            -->
+        </div>
+
+        <!-- Icon -->
+        <svg class="page-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
+        </svg>
+
+        <h1 id="customPageTitle" class="custom-page-title">User Details</h1> 
+        <!-- B2C will inject its heading, potentially in #api .heading, which is hidden by default by our CSS -->
+        <!-- If B2C's heading for this step is different and needed, adjust CSS for #api .heading -->
+
+        <!-- Azure B2C will inject all form content here -->
+        <div id="api" data-name="SelfAsserted">
+            <!-- 
+                B2C will inject fields like:
+                <div class="attrEntry">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="Email Address" placeholder="Email Address">
+                </div>
+                <div class="buttons">
+                     Button to send verification code might be <button id="continue" class="verificationButton">Send verification code</button>
+                     Another continue button might appear after code is sent, or for other actions.
+                     <button id="cancel">Cancel</button>
+                </div>
+            -->
+        </div>
+    </div>
+
+    <script>
+        // Minor script to move B2C cancel button if needed and style it with an icon
+        document.addEventListener('DOMContentLoaded', function() {
+            const apiDiv = document.getElementById('api');
+            const customCancelContainer = document.getElementById('customCancelButtonContainer');
+            
+            const observer = new MutationObserver(function(mutations) {
+                const b2cCancelButton = apiDiv.querySelector('button#cancel');
+                if (b2cCancelButton && customCancelContainer && !customCancelContainer.contains(b2cCancelButton)) {
+                    // Prepend SVG icon to B2C cancel button
+                    if (!b2cCancelButton.querySelector('svg')) {
+                        const svgIcon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                        svgIcon.setAttribute("class", "h-4 w-4 mr-2");
+                        svgIcon.setAttribute("fill", "none");
+                        svgIcon.setAttribute("viewBox", "0 0 24 24");
+                        svgIcon.setAttribute("stroke", "currentColor");
+                        svgIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />';
+                        b2cCancelButton.insertBefore(svgIcon, b2cCancelButton.firstChild);
+                    }
+                    // Move B2C cancel button to the top container
+                    customCancelContainer.appendChild(b2cCancelButton);
+                }
+                 // Ensure custom title is shown if B2C doesn't provide one we want
+                const b2cHeading = apiDiv.querySelector('.heading h1');
+                const customTitle = document.getElementById('customPageTitle');
+                if (b2cHeading && b2cHeading.innerText.trim() !== '' && customTitle) {
+                    // customTitle.style.display = 'none'; // Hide our custom one if B2C provides a good one
+                } else if (customTitle) {
+                    // customTitle.style.display = 'block'; // Ensure ours is shown
+                }
+            });
+
+            if (apiDiv) {
+                observer.observe(apiDiv, { childList: true, subtree: true });
+            }
+        });
+    </script>
+
+</body>
+</html>
