@@ -192,17 +192,6 @@
             width: 1rem; /* 16px */
             height: 1rem; /* 16px */
         }
-
-        #api input#email {
-            width: 100%;
-            padding: 1rem 1.5rem 1rem 1.5rem;
-            border: 1px solid #E0E0E0;
-            border-radius: 0.5rem;
-            background-color: transparent;
-            outline: none;
-            transition: all 0.2s;
-            font-size: 1rem;
-        }
     </style>
 </head>
 <body class="flex items-center justify-center min-h-screen p-4">
@@ -255,8 +244,70 @@
         document.addEventListener('DOMContentLoaded', function() {
             const apiDiv = document.getElementById('api');
             const customCancelContainer = document.getElementById('customCancelButtonContainer');
+
+            function forceApplyStyles() {
+                const emailInput = apiDiv.querySelector('input#email');
+                if (emailInput) {
+                    emailInput.style.setProperty('width', '100%', 'important');
+                    emailInput.style.setProperty('padding', '1rem 1.5rem', 'important');
+                    emailInput.style.setProperty('border', '1px solid #E0E0E0', 'important');
+                    emailInput.style.setProperty('border-radius', '0.5rem', 'important');
+                    emailInput.style.setProperty('background-color', 'transparent', 'important');
+                    emailInput.style.setProperty('outline', 'none', 'important');
+                    emailInput.style.setProperty('transition', 'all 0.2s', 'important');
+                    emailInput.style.setProperty('font-size', '1rem', 'important');
+                    emailInput.style.setProperty('color', '#1C2434', 'important');
+                }
+
+                const sendCodeButton = apiDiv.querySelector('#emailVerificationControl_but_send_code');
+                if (sendCodeButton) {
+                    sendCodeButton.style.setProperty('width', '100%', 'important');
+                    sendCodeButton.style.setProperty('background-color', '#7d0848ff', 'important');
+                    sendCodeButton.style.setProperty('color', 'white', 'important');
+                    sendCodeButton.style.setProperty('border', 'none', 'important');
+                    sendCodeButton.style.setProperty('padding', '1rem', 'important');
+                    sendCodeButton.style.setProperty('border-radius', '0.5rem', 'important');
+                    sendCodeButton.style.setProperty('font-size', '1rem', 'important');
+                    sendCodeButton.style.setProperty('font-weight', '500', 'important');
+                    sendCodeButton.style.setProperty('cursor', 'pointer', 'important');
+                    sendCodeButton.style.setProperty('transition', 'all 0.2s', 'important');
+                    sendCodeButton.style.setProperty('margin-bottom', '0.75rem', 'important');
+                }
+                
+                // Apply focus styles for email input (requires event listener as pseudo-classes can't be set directly)
+                // Note: This applies the border color and box shadow. The transition is already set.
+                if (emailInput && !emailInput.hasAttribute('data-focus-styled')) {
+                    emailInput.addEventListener('focus', function() {
+                        this.style.setProperty('border-color', '#3B82F6', 'important');
+                        this.style.setProperty('box-shadow', '0 0 0 3px rgba(59, 130, 246, 0.1)', 'important');
+                    });
+                    emailInput.addEventListener('blur', function() { // Reset on blur
+                        this.style.setProperty('border-color', '#E0E0E0', 'important');
+                        this.style.setProperty('box-shadow', 'none', 'important');
+                    });
+                    emailInput.setAttribute('data-focus-styled', 'true');
+                }
+
+                // Apply hover styles for send code button (requires event listener)
+                // Note: This applies background-color, transform, and box-shadow. Transition is set.
+                if (sendCodeButton && !sendCodeButton.hasAttribute('data-hover-styled')) {
+                    sendCodeButton.addEventListener('mouseenter', function() {
+                        this.style.setProperty('background-color', '#5a0634', 'important');
+                        this.style.setProperty('transform', 'translateY(-1px)', 'important');
+                        this.style.setProperty('box-shadow', '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)', 'important');
+                    });
+                    sendCodeButton.addEventListener('mouseleave', function() { // Reset on mouse leave
+                        this.style.setProperty('background-color', '#7d0848ff', 'important');
+                        this.style.setProperty('transform', 'translateY(0px)', 'important');
+                        this.style.setProperty('box-shadow', 'none', 'important');
+                    });
+                    sendCodeButton.setAttribute('data-hover-styled', 'true');
+                }
+            }
             
             const observer = new MutationObserver(function(mutations) {
+                forceApplyStyles(); // Apply styles whenever B2C changes the DOM
+
                 const b2cCancelButton = apiDiv.querySelector('button#cancel');
                 if (b2cCancelButton && customCancelContainer && !customCancelContainer.contains(b2cCancelButton)) {
                     // Prepend SVG icon to B2C cancel button
@@ -284,6 +335,7 @@
 
             if (apiDiv) {
                 observer.observe(apiDiv, { childList: true, subtree: true });
+                forceApplyStyles(); // Also apply styles on initial load
             }
         });
     </script>
