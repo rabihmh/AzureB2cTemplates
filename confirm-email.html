@@ -53,42 +53,43 @@
         
         /* Style for the input group container, similar to .entry in signin.html */
         #api .attrEntry {
-            margin-bottom: 1rem;
+            margin-bottom: 1rem !important; /* Ensure spacing */
         }
         
-        /* Entry fields styling (to match signin.html and reset-password.html) */
-        #api .entry label,
+        /* Entry fields styling (to match signin.html) */
         #api .attrEntry label {
-            display: block;
-            margin-bottom: 0.625rem;
-            font-weight: 500;
-            color: #1C2434;
-            font-size: 0.875rem;
+            display: block !important;
+            margin-bottom: 0.625rem !important;
+            font-weight: 500 !important;
+            color: #1C2434 !important;
+            font-size: 0.875rem !important;
+        }
+
+        #api input#email,
+        #api input#emailVerificationCode /* Style for verification code input as well */
+        {
+            width: 100% !important;
+            padding: 1rem 1.5rem !important;
+            border: 1px solid #E0E0E0 !important;
+            border-radius: 0.5rem !important;
+            background-color: transparent !important;
+            outline: none !important;
+            transition: all 0.2s !important;
+            font-size: 1rem !important;
+            color: #1C2434 !important;
         }
         
-        #api .entry input[type="email"],
-        #api .attrEntry input.textInput {
-            width: 100%;
-            padding: 1rem 1.5rem 1rem 1.5rem; /* Ensured four-value padding to match signin.html */
-            border: 1px solid #E0E0E0;
-            border-radius: 0.5rem;
-            background-color: transparent;
-            outline: none;
-            transition: all 0.2s; /* Adjusted transition */
-            font-size: 1rem;
-            color: #1C2434;
-            /* margin-bottom: 0.25rem; */ /* Removed margin-bottom, parent .attrEntry now handles it */
+        #api input#email:focus,
+        #api input#emailVerificationCode:focus /* Style for verification code input focus */
+        {
+            border-color: #3B82F6 !important;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
         }
         
-        #api .entry input[type="email"]:focus,
-        #api .attrEntry input.textInput:focus {
-            border-color: #3B82F6;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-        }
-        
-        #api .entry input::placeholder,
-        #api .attrEntry input.textInput::placeholder {
-            color: #9CA3AF;
+        #api input#email::placeholder,
+        #api input#emailVerificationCode::placeholder /* Style for verification code input placeholder */
+        {
+            color: #9CA3AF !important;
         }
 
         /* Error message styling (consistent) */
@@ -124,50 +125,39 @@
         
         /* Buttons */
         #api .buttons {
-            margin-top: 1.5rem;
+            margin-top: 1.5rem !important;
+            margin-bottom: 1.5rem !important; /* Added to match signin.html */
         }
         
-        /* Send verification code button - styled like signin.html primary button */
+        /* Primary button styling (Send verification code, Continue) */
         #api button#continue, 
-        #api button.verificationButton { 
-            width: 100%;
-            background-color: #7d0848ff; /* signin.html button color */
-            color: white;
-            border: none;
-            padding: 1rem; /* signin.html button padding */
-            border-radius: 0.5rem; /* signin.html button radius */
-            font-size: 1rem; /* signin.html button font size */
-            font-weight: 500; /* signin.html button font weight */
-            cursor: pointer;
-            transition: all 0.2s;
-            margin-bottom: 0.75rem; 
+        #api button#emailVerificationControl_but_send_code,
+        #api button#emailVerificationControl_but_verify_code, /* Also style verify code */
+        #api button.verificationButton /* Keep for broader compatibility if B2C uses this class */
+        { 
+            width: 100% !important;
+            background-color: #7d0848ff !important;
+            color: white !important;
+            border: none !important;
+            padding: 1rem !important;
+            border-radius: 0.5rem !important;
+            font-size: 1rem !important;
+            font-weight: 500 !important;
+            cursor: pointer !important;
+            transition: all 0.2s !important;
+            margin-bottom: 0.75rem !important; 
         }
         
-        #api button#continue:hover,
-        #api button.verificationButton:hover {
-            background-color: #5a0634; /* signin.html button hover color */
-            transform: translateY(-1px);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        #api button#continue:hover, 
+        #api button#emailVerificationControl_but_send_code:hover,
+        #api button#emailVerificationControl_but_verify_code:hover,
+        #api button.verificationButton:hover 
+        {
+            background-color: #5a0634 !important;
+            transform: translateY(-1px) !important;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
         }
 
-        /* Continue button (after code is sent, if B2C shows another one) - styled as secondary */
-        #api button[type="submit"] {
-             width: 100%;
-            background-color: #E5E7EB; /* Tailwind gray-200, for secondary/disabled looking button */
-            color: #374151; /* Tailwind gray-700 */
-            border: 1px solid #D1D5DB; /* Tailwind gray-300 */
-            padding: 0.75rem 1rem;
-            border-radius: 0.375rem;
-            font-size: 0.875rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        #api button[type="submit"]:hover {
-            background-color: #D1D5DB; /* Tailwind gray-300 */
-        }
-        
         /* Cancel button (Back button) */
         #api button#cancel {
             width: auto; /* Allow it to be smaller */
