@@ -241,12 +241,14 @@
 
     <script>
         // Minor script to move B2C cancel button if needed and style it with an icon
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const apiDiv = document.getElementById('api');
             const customCancelContainer = document.getElementById('customCancelButtonContainer');
-
+    
             function forceApplyStyles() {
                 const emailInput = apiDiv.querySelector('input#email');
+                const sendCodeButton = apiDiv.querySelector('#emailVerificationControl_but_send_code');
+    
                 if (emailInput) {
                     emailInput.style.setProperty('width', '100%', 'important');
                     emailInput.style.setProperty('padding', '1rem 1.5rem', 'important');
@@ -257,9 +259,20 @@
                     emailInput.style.setProperty('transition', 'all 0.2s', 'important');
                     emailInput.style.setProperty('font-size', '1rem', 'important');
                     emailInput.style.setProperty('color', '#1C2434', 'important');
+    
+                    if (!emailInput.hasAttribute('data-focus-styled')) {
+                        emailInput.addEventListener('focus', function () {
+                            this.style.setProperty('border-color', '#3B82F6', 'important');
+                            this.style.setProperty('box-shadow', '0 0 0 3px rgba(59, 130, 246, 0.1)', 'important');
+                        });
+                        emailInput.addEventListener('blur', function () {
+                            this.style.setProperty('border-color', '#E0E0E0', 'important');
+                            this.style.setProperty('box-shadow', 'none', 'important');
+                        });
+                        emailInput.setAttribute('data-focus-styled', 'true');
+                    }
                 }
-
-                const sendCodeButton = apiDiv.querySelector('#emailVerificationControl_but_send_code');
+    
                 if (sendCodeButton) {
                     sendCodeButton.style.setProperty('width', '100%', 'important');
                     sendCodeButton.style.setProperty('background-color', '#7d0848ff', 'important');
@@ -272,45 +285,37 @@
                     sendCodeButton.style.setProperty('cursor', 'pointer', 'important');
                     sendCodeButton.style.setProperty('transition', 'all 0.2s', 'important');
                     sendCodeButton.style.setProperty('margin-bottom', '0.75rem', 'important');
-                }
-                
-                // Apply focus styles for email input (requires event listener as pseudo-classes can't be set directly)
-                // Note: This applies the border color and box shadow. The transition is already set.
-                if (emailInput && !emailInput.hasAttribute('data-focus-styled')) {
-                    emailInput.addEventListener('focus', function() {
-                        this.style.setProperty('border-color', '#3B82F6', 'important');
-                        this.style.setProperty('box-shadow', '0 0 0 3px rgba(59, 130, 246, 0.1)', 'important');
-                    });
-                    emailInput.addEventListener('blur', function() { // Reset on blur
-                        this.style.setProperty('border-color', '#E0E0E0', 'important');
-                        this.style.setProperty('box-shadow', 'none', 'important');
-                    });
-                    emailInput.setAttribute('data-focus-styled', 'true');
-                }
-
-                // Apply hover styles for send code button (requires event listener)
-                // Note: This applies background-color, transform, and box-shadow. Transition is set.
-                if (sendCodeButton && !sendCodeButton.hasAttribute('data-hover-styled')) {
-                    sendCodeButton.addEventListener('mouseenter', function() {
-                        this.style.setProperty('background-color', '#5a0634', 'important');
-                        this.style.setProperty('transform', 'translateY(-1px)', 'important');
-                        this.style.setProperty('box-shadow', '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)', 'important');
-                    });
-                    sendCodeButton.addEventListener('mouseleave', function() { // Reset on mouse leave
-                        this.style.setProperty('background-color', '#7d0848ff', 'important');
-                        this.style.setProperty('transform', 'translateY(0px)', 'important');
-                        this.style.setProperty('box-shadow', 'none', 'important');
-                    });
-                    sendCodeButton.setAttribute('data-hover-styled', 'true');
+    
+                    if (!sendCodeButton.hasAttribute('data-hover-styled')) {
+                        sendCodeButton.addEventListener('mouseenter', function () {
+                            this.style.setProperty('background-color', '#5a0634', 'important');
+                            this.style.setProperty('transform', 'translateY(-1px)', 'important');
+                            this.style.setProperty('box-shadow', '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)', 'important');
+                        });
+                        sendCodeButton.addEventListener('mouseleave', function () {
+                            this.style.setProperty('background-color', '#7d0848ff', 'important');
+                            this.style.setProperty('transform', 'translateY(0px)', 'important');
+                            this.style.setProperty('box-shadow', 'none', 'important');
+                        });
+                        sendCodeButton.setAttribute('data-hover-styled', 'true');
+                    }
                 }
             }
-            
-            const observer = new MutationObserver(function(mutations) {
-                forceApplyStyles(); // Apply styles whenever B2C changes the DOM
-
+    
+            // ⏳ Retry until email input is available, then style it once
+            const waitForEmailInput = setInterval(() => {
+                const emailInput = apiDiv.querySelector('input#email');
+                if (emailInput) {
+                    forceApplyStyles();
+                    clearInterval(waitForEmailInput);
+                }
+            }, 200);
+    
+            const observer = new MutationObserver(function (mutations) {
+                forceApplyStyles();
+    
                 const b2cCancelButton = apiDiv.querySelector('button#cancel');
                 if (b2cCancelButton && customCancelContainer && !customCancelContainer.contains(b2cCancelButton)) {
-                    // Prepend SVG icon to B2C cancel button
                     if (!b2cCancelButton.querySelector('svg')) {
                         const svgIcon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
                         svgIcon.setAttribute("class", "h-4 w-4 mr-2");
@@ -320,25 +325,24 @@
                         svgIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />';
                         b2cCancelButton.insertBefore(svgIcon, b2cCancelButton.firstChild);
                     }
-                    // Move B2C cancel button to the top container
                     customCancelContainer.appendChild(b2cCancelButton);
                 }
-                 // Ensure custom title is shown if B2C doesn't provide one we want
+    
                 const b2cHeading = apiDiv.querySelector('.heading h1');
                 const customTitle = document.getElementById('customPageTitle');
                 if (b2cHeading && b2cHeading.innerText.trim() !== '' && customTitle) {
-                    // customTitle.style.display = 'none'; // Hide our custom one if B2C provides a good one
+                    // customTitle.style.display = 'none';
                 } else if (customTitle) {
-                    // customTitle.style.display = 'block'; // Ensure ours is shown
+                    // customTitle.style.display = 'block';
                 }
             });
-
+    
             if (apiDiv) {
                 observer.observe(apiDiv, { childList: true, subtree: true });
-                forceApplyStyles(); // Also apply styles on initial load
             }
         });
     </script>
+    
 
 </body>
 </html>
