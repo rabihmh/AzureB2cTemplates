@@ -5,10 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verify Email - Meeza Dashboard</title>
     
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -19,7 +17,6 @@
             background-color: #007bff; /* Blue background from screenshot */
         }
         
-        /* Azure B2C Form Styling */
         #api {
             background: transparent !important;
             border: none !important;
@@ -29,34 +26,31 @@
             animation: none !important;
         }
         
-        /* Hide Azure B2C default elements we don't need */
-        #api .intro {
-             display: none !important;
+        #api .intro, 
+        #api .heading /* Hide default B2C heading if using custom one */
+        {
+            display: none !important;
         }
 
-        /* Custom heading if needed, B2C heading might be different for this step */
         .custom-page-title {
-            font-size: 1.5rem; /* 24px */
+            font-size: 1.5rem; 
             font-weight: 600;
-            color: #374151; /* Tailwind gray-700 */
+            color: #374151; 
             text-align: center;
-            margin-bottom: 1.5rem; /* 24px */
+            margin-bottom: 1.5rem;
         }
 
-        /* Generic icon styling (like the cube) */
         .page-icon {
-            width: 4rem; /* 64px */
-            height: 4rem; /* 64px */
-            margin: 0 auto 1rem auto; /* Center icon and add margin below */
-            color: #D1D5DB; /* Tailwind gray-300 for a placeholder icon */
+            width: 4rem; 
+            height: 4rem; 
+            margin: 0 auto 1rem auto; 
+            color: #D1D5DB;
         }
         
-        /* Style for the input group container, similar to .entry in signin.html */
         #api .attrEntry {
-            margin-bottom: 1rem !important; /* Ensure spacing */
+            margin-bottom: 1rem !important;
         }
         
-        /* Entry fields styling (to match signin.html) */
         #api .attrEntry label {
             display: block !important;
             margin-bottom: 0.625rem !important;
@@ -66,7 +60,9 @@
         }
 
         #api input#email,
-        #api input#emailVerificationCode /* Style for verification code input as well */
+        #api input#emailVerificationCode,
+        #api input.textInput[type="email"], /* Broader selector for email input */
+        #api input.textInput[type="text"] /* For verification code if it's text */
         {
             width: 100% !important;
             padding: 1rem 1.5rem !important;
@@ -77,63 +73,67 @@
             transition: all 0.2s !important;
             font-size: 1rem !important;
             color: #1C2434 !important;
+            box-sizing: border-box !important; /* Important for padding and border */
         }
         
         #api input#email:focus,
-        #api input#emailVerificationCode:focus /* Style for verification code input focus */
+        #api input#emailVerificationCode:focus,
+        #api input.textInput[type="email"]:focus,
+        #api input.textInput[type="text"]:focus
         {
             border-color: #3B82F6 !important;
             box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
         }
         
         #api input#email::placeholder,
-        #api input#emailVerificationCode::placeholder /* Style for verification code input placeholder */
+        #api input#emailVerificationCode::placeholder,
+        #api input.textInput[type="email"]::placeholder,
+        #api input.textInput[type="text"]::placeholder 
         {
             color: #9CA3AF !important;
         }
 
-        /* Error message styling (consistent) */
         #api .error.itemLevel {
-            background-color: transparent;
-            border: none;
-            padding: 0.25rem 0 0 0;
-            margin-bottom: 0.5rem;
-            color: #C53030; 
-            font-size: 0.75rem;
-            display: none; 
+            background-color: transparent !important;
+            border: none !important;
+            padding: 0.25rem 0 0 0 !important;
+            margin-bottom: 0.5rem !important;
+            color: #C53030 !important; 
+            font-size: 0.75rem !important;
+            /* display: none;  Let B2C handle visibility, just style it */
         }
 
-        #api .error.itemLevel.show {
+        #api .error.itemLevel.show { /* B2C might add .show class */
             display: block !important;
         }
         
-        /* Input error state styling */
-        #api .attrEntry .error.itemLevel.show + input.textInput {
+        #api .attrEntry .error.itemLevel.show + input.textInput,
+        #api .attrEntry .error.itemLevel + input.textInput /* If error is shown before interaction */
+        {
             border-color: #FC8181 !important; 
             background-color: #FFF5F5 !important;
         }
 
         #api .error.pageLevel {
-            background-color: #FED7D7;
-            border: 1px solid #FC8181;
-            border-radius: 0.375rem;
-            padding: 0.75rem 1rem;
-            margin-bottom: 1.5rem;
-            color: #C53030;
-            font-size: 0.875rem;
+            background-color: #FED7D7 !important;
+            border: 1px solid #FC8181 !important;
+            border-radius: 0.375rem !important;
+            padding: 0.75rem 1rem !important;
+            margin-bottom: 1.5rem !important;
+            color: #C53030 !important;
+            font-size: 0.875rem !important;
         }
         
-        /* Buttons */
         #api .buttons {
             margin-top: 1.5rem !important;
-            margin-bottom: 1.5rem !important; /* Added to match signin.html */
+            margin-bottom: 1.5rem !important;
         }
         
-        /* Primary button styling (Send verification code, Continue) */
         #api button#continue, 
         #api button#emailVerificationControl_but_send_code,
-        #api button#emailVerificationControl_but_verify_code, /* Also style verify code */
-        #api button.verificationButton /* Keep for broader compatibility if B2C uses this class */
+        #api button#emailVerificationControl_but_verify_code,
+        #api button.verificationButton, /* Generic verification button class */
+        #api button[type="submit"] /* Catch-all for submit buttons */
         { 
             width: 100% !important;
             background-color: #7d0848ff !important;
@@ -151,188 +151,281 @@
         #api button#continue:hover, 
         #api button#emailVerificationControl_but_send_code:hover,
         #api button#emailVerificationControl_but_verify_code:hover,
-        #api button.verificationButton:hover 
+        #api button.verificationButton:hover,
+        #api button[type="submit"]:hover
         {
             background-color: #5a0634 !important;
             transform: translateY(-1px) !important;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
         }
 
-        /* Cancel button (Back button) */
         #api button#cancel {
-            width: auto; /* Allow it to be smaller */
-            background-color: transparent;
-            color: #6B7280; /* Tailwind gray-500 */
-            border: none;
-            padding: 0.5rem 0; /* Minimal padding */
-            font-size: 0.875rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: color 0.2s; /* Adjusted transition */
-            display: flex; /* For icon alignment */
-            align-items: center;
+            width: auto !important; 
+            background-color: transparent !important;
+            color: #6B7280 !important; 
+            border: none !important;
+            padding: 0.5rem 0 !important; 
+            font-size: 0.875rem !important;
+            font-weight: 500 !important;
+            cursor: pointer !important;
+            transition: color 0.2s !important;
+            display: flex !important; 
+            align-items: center !important;
+            margin-bottom: 0 !important; /* Reset margin from broader button rules */
         }
 
         #api button#cancel:hover {
-            color: #1F2937; /* Tailwind gray-800 */
+            color: #1F2937 !important; 
         }
 
         #api button#cancel svg {
-            margin-right: 0.5rem;
-            width: 1rem; /* 16px */
-            height: 1rem; /* 16px */
+            margin-right: 0.5rem !important;
+            width: 1rem !important; 
+            height: 1rem !important;
         }
     </style>
 </head>
 <body class="flex items-center justify-center min-h-screen p-4">
-    <!-- Company branding assets (Azure B2C will replace these) -->
     <img data-tenant-branding-background="true" class="hidden" />
     <img data-tenant-branding-logo="true" alt="Company Logo" class="hidden" />
     
     <div class="bg-white rounded-lg shadow-xl w-full max-w-md p-8 sm:p-10">
-        
-        <!-- Back/Cancel button (B2C might inject its own or we can have a static one if policy allows) -->
-        <!-- For B2C, usually the #cancel button is styled. If it doesn't render an icon, we can add via JS or just text -->
-        <div id="customCancelButtonContainer" class="mb-6">
-             <!-- B2C cancel button will be styled. If you need a static one and B2C doesn't provide #cancel here, then: -->
-             <!-- 
-             <button onclick="history.back()" class="flex items-center text-sm text-gray-600 hover:text-gray-800">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
-                Cancel
-            </button> 
-            -->
-        </div>
+        <div id="customCancelButtonContainer" class="mb-6 h-8"> </div>
 
-        <!-- Icon -->
         <svg class="page-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
         </svg>
 
-        <h1 id="customPageTitle" class="custom-page-title">User Details</h1> 
-        <!-- B2C will inject its heading, potentially in #api .heading, which is hidden by default by our CSS -->
-        <!-- If B2C's heading for this step is different and needed, adjust CSS for #api .heading -->
-
-        <!-- Azure B2C will inject all form content here -->
-        <div id="api" data-name="SelfAsserted">
-            <!-- 
-                B2C will inject fields like:
-                <div class="attrEntry">
-                    <label for="email">Email Address</label>
-                    <input type="email" id="email" name="Email Address" placeholder="Email Address">
-                </div>
-                <div class="buttons">
-                     Button to send verification code might be <button id="continue" class="verificationButton">Send verification code</button>
-                     Another continue button might appear after code is sent, or for other actions.
-                     <button id="cancel">Cancel</button>
-                </div>
-            -->
-        </div>
+        <h1 id="customPageTitle" class="custom-page-title">Verify Your Email</h1> 
+        
+        <div id="api" data-name="SelfAsserted" dir="ltr">
+            </div>
     </div>
 
     <script>
-        // Minor script to move B2C cancel button if needed and style it with an icon
-        document.addEventListener('DOMContentLoaded', function () {
-            const apiDiv = document.getElementById('api');
-            const customCancelContainer = document.getElementById('customCancelButtonContainer');
-    
-            function forceApplyStyles() {
-                const emailInput = apiDiv.querySelector('input#email');
-                const sendCodeButton = apiDiv.querySelector('#emailVerificationControl_but_send_code');
-    
-                if (emailInput) {
-                    emailInput.style.setProperty('width', '100%', 'important');
-                    emailInput.style.setProperty('padding', '1rem 1.5rem', 'important');
-                    emailInput.style.setProperty('border', '1px solid #E0E0E0', 'important');
-                    emailInput.style.setProperty('border-radius', '0.5rem', 'important');
-                    emailInput.style.setProperty('background-color', 'transparent', 'important');
-                    emailInput.style.setProperty('outline', 'none', 'important');
-                    emailInput.style.setProperty('transition', 'all 0.2s', 'important');
-                    emailInput.style.setProperty('font-size', '1rem', 'important');
-                    emailInput.style.setProperty('color', '#1C2434', 'important');
-    
-                    if (!emailInput.hasAttribute('data-focus-styled')) {
-                        emailInput.addEventListener('focus', function () {
-                            this.style.setProperty('border-color', '#3B82F6', 'important');
-                            this.style.setProperty('box-shadow', '0 0 0 3px rgba(59, 130, 246, 0.1)', 'important');
-                        });
-                        emailInput.addEventListener('blur', function () {
-                            this.style.setProperty('border-color', '#E0E0E0', 'important');
-                            this.style.setProperty('box-shadow', 'none', 'important');
-                        });
-                        emailInput.setAttribute('data-focus-styled', 'true');
-                    }
-                }
-    
-                if (sendCodeButton) {
-                    sendCodeButton.style.setProperty('width', '100%', 'important');
-                    sendCodeButton.style.setProperty('background-color', '#7d0848ff', 'important');
-                    sendCodeButton.style.setProperty('color', 'white', 'important');
-                    sendCodeButton.style.setProperty('border', 'none', 'important');
-                    sendCodeButton.style.setProperty('padding', '1rem', 'important');
-                    sendCodeButton.style.setProperty('border-radius', '0.5rem', 'important');
-                    sendCodeButton.style.setProperty('font-size', '1rem', 'important');
-                    sendCodeButton.style.setProperty('font-weight', '500', 'important');
-                    sendCodeButton.style.setProperty('cursor', 'pointer', 'important');
-                    sendCodeButton.style.setProperty('transition', 'all 0.2s', 'important');
-                    sendCodeButton.style.setProperty('margin-bottom', '0.75rem', 'important');
-    
-                    if (!sendCodeButton.hasAttribute('data-hover-styled')) {
-                        sendCodeButton.addEventListener('mouseenter', function () {
-                            this.style.setProperty('background-color', '#5a0634', 'important');
-                            this.style.setProperty('transform', 'translateY(-1px)', 'important');
-                            this.style.setProperty('box-shadow', '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)', 'important');
-                        });
-                        sendCodeButton.addEventListener('mouseleave', function () {
-                            this.style.setProperty('background-color', '#7d0848ff', 'important');
-                            this.style.setProperty('transform', 'translateY(0px)', 'important');
-                            this.style.setProperty('box-shadow', 'none', 'important');
-                        });
-                        sendCodeButton.setAttribute('data-hover-styled', 'true');
-                    }
-                }
-            }
-    
-            // ⏳ Retry until email input is available, then style it once
-            const waitForEmailInput = setInterval(() => {
-                const emailInput = apiDiv.querySelector('input#email');
-                if (emailInput) {
-                    forceApplyStyles();
-                    clearInterval(waitForEmailInput);
-                }
-            }, 200);
-    
-            const observer = new MutationObserver(function (mutations) {
-                forceApplyStyles();
-    
-                const b2cCancelButton = apiDiv.querySelector('button#cancel');
-                if (b2cCancelButton && customCancelContainer && !customCancelContainer.contains(b2cCancelButton)) {
-                    if (!b2cCancelButton.querySelector('svg')) {
-                        const svgIcon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-                        svgIcon.setAttribute("class", "h-4 w-4 mr-2");
-                        svgIcon.setAttribute("fill", "none");
-                        svgIcon.setAttribute("viewBox", "0 0 24 24");
-                        svgIcon.setAttribute("stroke", "currentColor");
-                        svgIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />';
-                        b2cCancelButton.insertBefore(svgIcon, b2cCancelButton.firstChild);
-                    }
-                    customCancelContainer.appendChild(b2cCancelButton);
-                }
-    
-                const b2cHeading = apiDiv.querySelector('.heading h1');
-                const customTitle = document.getElementById('customPageTitle');
-                if (b2cHeading && b2cHeading.innerText.trim() !== '' && customTitle) {
-                    // customTitle.style.display = 'none';
-                } else if (customTitle) {
-                    // customTitle.style.display = 'block';
-                }
-            });
-    
-            if (apiDiv) {
-                observer.observe(apiDiv, { childList: true, subtree: true });
-            }
-        });
-    </script>
-    
+    document.addEventListener('DOMContentLoaded', function () {
+        const apiDiv = document.getElementById('api');
+        if (!apiDiv) {
+            console.error("Azure B2C #api container not found on DOMContentLoaded. Styling may fail.");
+            return;
+        }
+        const customCancelContainer = document.getElementById('customCancelButtonContainer');
+        const customPageTitle = document.getElementById('customPageTitle');
 
+        // Use a WeakSet to keep track of elements for which listeners have been added
+        const initializedElements = new WeakSet();
+
+        function applyElementStyles(element, baseStyles, hoverStyles, focusStyles) {
+            if (!element) return;
+
+            // Apply base styles
+            for (const prop in baseStyles) {
+                element.style.setProperty(prop, baseStyles[prop], 'important');
+            }
+
+            // Add event listeners only once
+            if (!initializedElements.has(element)) {
+                if (hoverStyles) {
+                    element.addEventListener('mouseenter', () => {
+                        for (const prop in hoverStyles.enter) {
+                            element.style.setProperty(prop, hoverStyles.enter[prop], 'important');
+                        }
+                    });
+                    element.addEventListener('mouseleave', () => {
+                        for (const prop in hoverStyles.leave) {
+                            element.style.setProperty(prop, hoverStyles.leave[prop], 'important');
+                        }
+                         // Re-apply base background if not in focus
+                        if (baseStyles['background-color'] && !(document.activeElement === element && focusStyles)) {
+                             element.style.setProperty('background-color', baseStyles['background-color'], 'important');
+                        }
+                    });
+                }
+                if (focusStyles) {
+                    element.addEventListener('focus', () => {
+                        for (const prop in focusStyles) {
+                            element.style.setProperty(prop, focusStyles[prop], 'important');
+                        }
+                    });
+                    element.addEventListener('blur', () => { // Reset to base styles on blur
+                        for (const prop in baseStyles) {
+                             // Don't reset border-color if it was set by baseStyles on focus (e.g. error state)
+                            if (prop === 'border-color' && baseStyles[prop] !== focusStyles[prop]) {
+                                element.style.setProperty(prop, baseStyles[prop], 'important');
+                            } else if (prop !== 'border-color') {
+                                element.style.setProperty(prop, baseStyles[prop], 'important');
+                            }
+                        }
+                        // Specifically reset box-shadow if it was part of focus
+                        if(focusStyles['box-shadow']){
+                            element.style.setProperty('box-shadow', 'none', 'important');
+                        }
+                         // Re-apply base border if different from focus
+                        if(baseStyles['border'] && focusStyles['border-color'] && baseStyles['border'].split(' ')[2] !== focusStyles['border-color']){
+                            element.style.setProperty('border', baseStyles['border'], 'important');
+                        }
+                    });
+                }
+                initializedElements.add(element);
+            }
+        }
+
+
+        function forceApplyPageStyling() {
+            console.log('forceApplyPageStyling triggered');
+
+            // Email Input
+            const emailInput = apiDiv.querySelector('input#email, input.textInput[type="email"]'); // More general
+            if (emailInput) {
+                console.log('Email input found:', emailInput);
+                applyElementStyles(emailInput,
+                    { /* base */
+                        'width': '100%', 'padding': '1rem 1.5rem', 'border': '1px solid #E0E0E0',
+                        'border-radius': '0.5rem', 'background-color': 'transparent', 'outline': 'none',
+                        'transition': 'all 0.2s', 'font-size': '1rem', 'color': '#1C2434', 'box-sizing': 'border-box'
+                    },
+                    null, /* no hover specific for input, handled by focus */
+                    { /* focus */
+                        'border-color': '#3B82F6', 
+                        'box-shadow': '0 0 0 3px rgba(59, 130, 246, 0.1)'
+                    }
+                );
+            } else { console.log('Email input not found.'); }
+
+            // Verification Code Input (if present)
+            const verificationCodeInput = apiDiv.querySelector('input#emailVerificationCode, input.textInput[type="text"]:not(#email)');
+            if (verificationCodeInput) {
+                 console.log('Verification code input found:', verificationCodeInput);
+                 applyElementStyles(verificationCodeInput,
+                    { /* base */
+                        'width': '100%', 'padding': '1rem 1.5rem', 'border': '1px solid #E0E0E0',
+                        'border-radius': '0.5rem', 'background-color': 'transparent', 'outline': 'none',
+                        'transition': 'all 0.2s', 'font-size': '1rem', 'color': '#1C2434', 'box-sizing': 'border-box'
+                    },
+                    null,
+                    { /* focus */
+                        'border-color': '#3B82F6',
+                        'box-shadow': '0 0 0 3px rgba(59, 130, 246, 0.1)'
+                    }
+                );
+            } else { console.log('Verification code input not found.'); }
+
+
+            // Buttons (Send Code, Verify, Continue)
+            const primaryButtonSelectors = [
+                'button#emailVerificationControl_but_send_code',
+                'button#emailVerificationControl_but_verify_code',
+                'button#continue', // General B2C continue
+                'button.verificationButton', // Class sometimes used
+                'div.buttons > button[type="submit"]' // More generic submit
+            ].join(', ');
+
+            const primaryButtons = apiDiv.querySelectorAll(primaryButtonSelectors);
+            primaryButtons.forEach(button => {
+                // Avoid re-styling the cancel button if it gets caught by a generic selector
+                if(button.id === 'cancel') return;
+
+                console.log('Primary button found:', button.id || button.className);
+                applyElementStyles(button,
+                    { /* base */
+                        'width': '100%', 'background-color': '#7d0848ff', 'color': 'white', 'border': 'none',
+                        'padding': '1rem', 'border-radius': '0.5rem', 'font-size': '1rem',
+                        'font-weight': '500', 'cursor': 'pointer', 'transition': 'all 0.2s', 'margin-bottom': '0.75rem'
+                    },
+                    { /* hover */
+                        enter: { 'background-color': '#5a0634', 'transform': 'translateY(-1px)', 'box-shadow': '0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06)' },
+                        leave: { 'background-color': '#7d0848ff', 'transform': 'translateY(0px)', 'box-shadow': 'none' }
+                    },
+                    null /* no specific focus styles for button beyond hover/active */
+                );
+            });
+             if (primaryButtons.length === 0) { console.log('No primary buttons found with selectors.');}
+
+
+            // Cancel Button
+            const b2cCancelButton = apiDiv.querySelector('button#cancel');
+            if (b2cCancelButton && customCancelContainer && !customCancelContainer.contains(b2cCancelButton)) {
+                console.log('Cancel button found, moving and styling.');
+                if (!b2cCancelButton.querySelector('svg')) {
+                    const svgIcon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                    svgIcon.setAttribute("class", "h-4 w-4 mr-2"); // Tailwind classes
+                    svgIcon.setAttribute("fill", "none");
+                    svgIcon.setAttribute("viewBox", "0 0 24 24");
+                    svgIcon.setAttribute("stroke", "currentColor");
+                    svgIcon.setAttribute("stroke-width", "2");
+                    svgIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />';
+                    b2cCancelButton.insertBefore(svgIcon, b2cCancelButton.firstChild);
+                }
+                // Apply base styles for cancel button directly or via CSS
+                 applyElementStyles(b2cCancelButton,
+                    { /* base */
+                        'width': 'auto', 'background-color': 'transparent', 'color': '#6B7280', 'border': 'none',
+                        'padding': '0.5rem 0', 'font-size': '0.875rem', 'font-weight': '500',
+                        'cursor': 'pointer', 'transition': 'color 0.2s', 'display': 'flex', 'align-items': 'center',
+                        'margin-bottom': '0'
+                    },
+                    { /* hover */
+                        enter: { 'color': '#1F2937' },
+                        leave: { 'color': '#6B7280' }
+                    },
+                    null
+                );
+                customCancelContainer.appendChild(b2cCancelButton);
+            } else if (b2cCancelButton && customCancelContainer.contains(b2cCancelButton)) {
+                 // Already moved, just ensure styles if observer re-fires
+                 console.log('Cancel button already in custom container, ensuring styles.');
+                 applyElementStyles(b2cCancelButton, { /* base styles as above */}, { /* hover styles as above */ }, null);
+            } else { console.log('B2C Cancel button not found or custom container missing.'); }
+
+            // Page Title Logic
+            const b2cHeadingElement = apiDiv.querySelector('.heading h1, .intro h2'); // Common B2C heading selectors
+            if (customPageTitle) {
+                if (b2cHeadingElement && b2cHeadingElement.innerText.trim() !== '') {
+                    customPageTitle.style.display = 'none';
+                    console.log('B2C heading found, hiding custom title. B2C Title:', b2cHeadingElement.innerText);
+                } else {
+                    customPageTitle.style.display = 'block';
+                    console.log('No B2C heading found or empty, showing custom title.');
+                }
+            }
+        }
+
+        // Initial attempt to style, elements might not be ready.
+        forceApplyPageStyling(); 
+
+        const observer = new MutationObserver(function (mutationsList, observer) {
+            console.log('MutationObserver detected DOM changes.');
+            // It's crucial to check if the #api div still exists, B2C could potentially replace it.
+            if (!document.body.contains(apiDiv)) {
+                console.error("#api div was removed from DOM. Stopping observer.");
+                observer.disconnect();
+                return;
+            }
+            forceApplyPageStyling();
+        });
+
+        observer.observe(apiDiv, {
+            childList: true, // Detect when children are added or removed from #api
+            subtree: true    // Detect changes in descendants of #api as well
+            // attributes: true, // Optional: if B2C changes classes/attributes that break your styles
+            // attributeFilter: ['style', 'class'] // Optional: if attributes=true, only watch specific ones
+        });
+
+        // Optional: A safety net interval if elements appear very late and somehow bypass the observer
+        // Use with caution as it can be performance-intensive.
+        /*
+        let retryCount = 0;
+        const retryInterval = setInterval(() => {
+            console.log('Retry interval styling attempt...');
+            forceApplyPageStyling();
+            retryCount++;
+            if (retryCount > 15) { // Stop after ~3 seconds
+                clearInterval(retryInterval);
+                console.log('Stopped retry interval.');
+            }
+        }, 200);
+        */
+    });
+    </script>
 </body>
 </html>
