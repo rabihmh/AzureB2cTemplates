@@ -67,17 +67,17 @@
             padding: 1rem 1.5rem;
             border: 1px solid #E0E0E0;
             border-radius: 0.5rem;
-            background-color: #FFFFFF; /* White background for inputs on this page */
+            background-color: transparent;
             outline: none;
             transition: border-color 0.2s, background-color 0.2s, box-shadow 0.2s;
             font-size: 1rem;
-            color: #2D3748;
+            color: #1C2434;
             margin-bottom: 0.25rem;
         }
         
         #api .entry input[type="email"]:focus,
         #api .attrEntry input.textInput[type="email"]:focus {
-            border-color: #3B82F6; /* Blue focus from signin */
+            border-color: #3B82F6;
             box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
         
@@ -104,7 +104,7 @@
         /* Input error state styling */
         #api .attrEntry .error.itemLevel.show + input.textInput[type="email"] {
             border-color: #FC8181 !important; 
-            background-color: #FFF5F5 !important; 
+            background-color: #FFF5F5 !important;
         }
 
         #api .error.pageLevel {
@@ -122,28 +122,30 @@
             margin-top: 1.5rem;
         }
         
-        /* Send verification code button */
-        #api button#continue, /* B2C often uses 'continue' for the primary action */
-        #api button.verificationButton { /* If B2C uses a specific class for send code */
+        /* Send verification code button - styled like signin.html primary button */
+        #api button#continue, 
+        #api button.verificationButton { 
             width: 100%;
-            background-color: #2563EB; /* Tailwind blue-600, from screenshot */
+            background-color: #7d0848ff; /* signin.html button color */
             color: white;
             border: none;
-            padding: 0.75rem 1rem;
-            border-radius: 0.375rem;
-            font-size: 0.875rem;
-            font-weight: 600;
+            padding: 1rem; /* signin.html button padding */
+            border-radius: 0.5rem; /* signin.html button radius */
+            font-size: 1rem; /* signin.html button font size */
+            font-weight: 500; /* signin.html button font weight */
             cursor: pointer;
             transition: all 0.2s;
-            margin-bottom: 0.75rem; /* Space between buttons */
+            margin-bottom: 0.75rem; 
         }
         
         #api button#continue:hover,
         #api button.verificationButton:hover {
-            background-color: #1D4ED8; /* Tailwind blue-700 */
+            background-color: #5a0634; /* signin.html button hover color */
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
 
-        /* Continue button (after code is sent, if B2C shows another one) or general submit */
+        /* Continue button (after code is sent, if B2C shows another one) - styled as secondary */
         #api button[type="submit"] {
              width: 100%;
             background-color: #E5E7EB; /* Tailwind gray-200, for secondary/disabled looking button */
