@@ -62,7 +62,7 @@
         }
         
         #api .entry input[type="email"],
-        #api .attrEntry input.textInput[type="email"] {
+        #api .attrEntry input.textInput {
             width: 100%;
             padding: 1rem 1.5rem; /* Adjusted padding */
             border: 1px solid #E0E0E0;
@@ -76,13 +76,13 @@
         }
         
         #api .entry input[type="email"]:focus,
-        #api .attrEntry input.textInput[type="email"]:focus {
+        #api .attrEntry input.textInput:focus {
             border-color: #3B82F6;
             box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
         
         #api .entry input::placeholder,
-        #api .attrEntry input.textInput[type="email"]::placeholder {
+        #api .attrEntry input.textInput::placeholder {
             color: #9CA3AF;
         }
 
@@ -102,7 +102,7 @@
         }
         
         /* Input error state styling */
-        #api .attrEntry .error.itemLevel.show + input.textInput[type="email"] {
+        #api .attrEntry .error.itemLevel.show + input.textInput {
             border-color: #FC8181 !important; 
             background-color: #FFF5F5 !important;
         }
