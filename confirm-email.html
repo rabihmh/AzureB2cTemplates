@@ -259,7 +259,8 @@
         /* Azure B2C send verification code button */
         #api button#emailVerificationControl_but_send_code,
         #emailVerificationControl_but_verify_code,
-        #emailVerificationControl_but_send_new_code {
+        #emailVerificationControl_but_send_new_code,
+        #emailVerificationControl_but_change_claims {
             width: 100%;
             background-color: #7d0848; /* Meeza brand color */
             color: white;
@@ -274,13 +275,15 @@
 
         #api button#emailVerificationControl_but_send_code:hover,
         #emailVerificationControl_but_verify_code:hover,
-        #emailVerificationControl_but_send_new_code:hover {
+        #emailVerificationControl_but_send_new_code:hover,
+        #emailVerificationControl_but_change_claims:hover {
             background-color: #5a0634; /* Darker Meeza brand color */
         }
 
         #api button#emailVerificationControl_but_send_code:disabled,
         #emailVerificationControl_but_verify_code:disabled,
-        #emailVerificationControl_but_send_new_code:disabled {
+        #emailVerificationControl_but_send_new_code:disabled,
+        #emailVerificationControl_but_change_claims:disabled {
             background-color: #D1D5DB; /* gray-300 */
             color: #9CA3AF; /* gray-400 */
             cursor: not-allowed;
