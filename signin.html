@@ -47,6 +47,8 @@
         #api .social {
             padding: 0;
             margin: 0;
+            display: flex;
+            flex-direction: column;
         }
         
         /* Style intro section */
@@ -62,6 +64,7 @@
         /* Entry fields styling */
         #api .entry {
             margin-bottom: 1rem;
+            order: 1;
         }
         
         #api .entry label {
@@ -111,6 +114,7 @@
             margin-bottom: 1rem;
             color: #991B1B;
             font-size: 0.875rem;
+            order: 0;
         }
         
         #api .error p {
@@ -120,7 +124,8 @@
         /* Buttons */
         #api .buttons {
             margin-top: 1.5rem;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
+            order: 2;
         }
         
         #api button[type="submit"],
@@ -179,14 +184,42 @@
             text-decoration: underline;
         }
         
-        /* Forgot password link */
+        /* Forgot password link - moved after button */
         #api .rememberMe {
-            margin-bottom: 1rem;
+            margin-bottom: 0;
+            order: 3;
+            text-align: center;
+            margin-top: 1rem;
         }
         
         #api .forgot-password {
-            float: right;
-            margin-top: 0.5rem;
+            float: none;
+            margin-top: 0;
+            display: inline-block;
+            color: #7d0848ff;
+            font-size: 0.875rem;
+        }
+        
+        #api .forgot-password:hover {
+            color: #5a0634;
+        }
+        
+        /* Additional targeting for forgot password links */
+        #api a[href*="forgot"],
+        #api a[href*="password"],
+        #api .rememberMe a {
+            order: 3;
+            margin-top: 1rem;
+            text-align: center;
+            display: block;
+            color: #7d0848ff !important;
+            font-size: 0.875rem;
+        }
+        
+        #api a[href*="forgot"]:hover,
+        #api a[href*="password"]:hover,
+        #api .rememberMe a:hover {
+            color: #5a0634 !important;
         }
         
         /* Social identity providers */
@@ -300,11 +333,6 @@
                          alt="Logo" 
                          class="w-80 h-auto">
                 </a>
-                
-                <p class="text-gray-600 text-center mb-12 px-8">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit suspendisse.
-                </p>
-                
                 <!-- Phone SVG Illustration -->
                 <svg width="350" height="350" viewBox="0 0 350 350" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M33.5825 294.844L30.5069 282.723C25.0538 280.414 19.4747 278.414 13.7961 276.732L13.4079 282.365L11.8335 276.159C4.79107 274.148 0 273.263 0 273.263C0 273.263 6.46998 297.853 20.0448 316.653L35.8606 319.429L23.5737 321.2C25.2813 323.253 27.1164 325.196 29.0681 327.019C48.8132 345.333 70.8061 353.736 78.1898 345.787C85.5736 337.838 75.5526 316.547 55.8074 298.235C49.6862 292.557 41.9968 288.001 34.2994 284.415L33.5825 294.844Z" fill="#F2F2F2"/>
