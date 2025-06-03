@@ -61,36 +61,146 @@
         
         /* Entry fields styling */
         #api .entry {
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
+            position: relative;
         }
         
         #api .entry label {
             display: block;
-            margin-bottom: 0.625rem;
-            font-weight: 500;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
             color: #1C2434;
+            font-size: 0.875rem;
+            letter-spacing: 0.025em;
+            text-transform: uppercase;
+            transition: color 0.2s ease;
+            position: relative;
         }
         
+        /* Add required asterisk to labels */
+        #api .entry label::after {
+            content: " *";
+            color: #7d0848ff;
+            font-weight: 600;
+            margin-left: 2px;
+        }
+        
+        /* Enhanced input styling */
         #api .entry input[type="email"],
         #api .entry input[type="text"],
         #api .entry input[type="password"] {
             width: 100%;
-            padding: 1rem 1.5rem 1rem 1.5rem;
-            border: 1px solid #E0E0E0;
-            border-radius: 0.5rem;
-            background-color: transparent;
+            padding: 1rem 1.5rem;
+            border: 2px solid #E5E7EB;
+            border-radius: 0.75rem;
+            background-color: #FAFAFA;
             outline: none;
-            transition: all 0.2s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             font-size: 1rem;
+            font-weight: 400;
+            color: #1F2937;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
         }
         
+        /* Enhanced focus state */
         #api .entry input:focus {
-            border-color: #3B82F6;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            border-color: #7d0848ff;
+            background-color: #FFFFFF;
+            box-shadow: 0 0 0 3px rgba(125, 8, 72, 0.1), 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transform: translateY(-1px);
         }
         
+        /* Enhanced hover state */
+        #api .entry input:hover {
+            border-color: #D1D5DB;
+            background-color: #FFFFFF;
+        }
+        
+        /* Enhanced placeholder styling */
         #api .entry input::placeholder {
             color: #9CA3AF;
+            font-weight: 400;
+            transition: opacity 0.2s ease;
+        }
+        
+        #api .entry input:focus::placeholder {
+            opacity: 0.7;
+        }
+        
+        /* Label animation on focus */
+        #api .entry:focus-within label {
+            color: #7d0848ff;
+            transform: translateY(-2px);
+        }
+        
+        /* Invalid/error state styling */
+        #api .entry input:invalid:not(:placeholder-shown) {
+            border-color: #EF4444;
+            background-color: #FEF2F2;
+        }
+        
+        #api .entry input:invalid:not(:placeholder-shown) + label {
+            color: #EF4444;
+        }
+        
+        /* Floating label effect */
+        #api .entry.focused label {
+            color: #7d0848ff;
+            transform: translateY(-2px);
+        }
+        
+        /* Success state for filled inputs */
+        #api .entry input:valid:not(:placeholder-shown) {
+            border-color: #10B981;
+            background-color: #F0FDF4;
+        }
+        
+        #api .entry input:valid:not(:placeholder-shown) + label {
+            color: #10B981;
+        }
+        
+        /* Loading state animation */
+        @keyframes labelPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        #api .entry.loading label {
+            animation: labelPulse 1.5s ease-in-out infinite;
+        }
+        
+        /* Enhanced typography for better readability */
+        #api .entry label {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.2;
+        }
+        
+        /* Subtle shadow for labels */
+        #api .entry label::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -2px;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #7d0848ff, #a855f7);
+            transition: width 0.3s ease;
+        }
+        
+        #api .entry:focus-within label::before {
+            width: 100%;
+        }
+        
+        /* Responsive label adjustments */
+        @media (max-width: 640px) {
+            #api .entry label {
+                font-size: 0.8rem;
+                margin-bottom: 0.5rem;
+            }
+            
+            #api .entry {
+                margin-bottom: 1.25rem;
+            }
         }
         
         /* Password toggle visibility */
@@ -417,6 +527,68 @@
             }
         }
         
+        // Enhance labels with better text and accessibility
+        function enhanceLabels() {
+            // Enhance email label
+            const emailLabel = document.querySelector('label[for="email"]');
+            if (emailLabel && !emailLabel.dataset.enhanced) {
+                emailLabel.textContent = 'Email Address';
+                emailLabel.dataset.enhanced = 'true';
+            }
+            
+            // Enhance password label
+            const passwordLabel = document.querySelector('label[for="password"]');
+            if (passwordLabel && !passwordLabel.dataset.enhanced) {
+                passwordLabel.textContent = 'Password';
+                passwordLabel.dataset.enhanced = 'true';
+            }
+            
+            // Add accessibility improvements
+            const inputs = document.querySelectorAll('#api input[type="email"], #api input[type="password"]');
+            inputs.forEach(input => {
+                if (!input.getAttribute('aria-required')) {
+                    input.setAttribute('aria-required', 'true');
+                }
+                
+                // Add better placeholder text
+                if (input.type === 'email' && !input.placeholder) {
+                    input.placeholder = 'Enter your email address';
+                }
+                if (input.type === 'password' && !input.placeholder) {
+                    input.placeholder = 'Enter your password';
+                }
+            });
+        }
+        
+        // Add floating label effect
+        function addFloatingLabelEffect() {
+            const entries = document.querySelectorAll('#api .entry');
+            entries.forEach(entry => {
+                const input = entry.querySelector('input');
+                const label = entry.querySelector('label');
+                
+                if (input && label && !entry.dataset.floatingAdded) {
+                    entry.dataset.floatingAdded = 'true';
+                    
+                    // Add event listeners for floating effect
+                    input.addEventListener('focus', () => {
+                        entry.classList.add('focused');
+                    });
+                    
+                    input.addEventListener('blur', () => {
+                        if (!input.value) {
+                            entry.classList.remove('focused');
+                        }
+                    });
+                    
+                    // Check if input already has value
+                    if (input.value) {
+                        entry.classList.add('focused');
+                    }
+                }
+            });
+        }
+        
         // Move forgot password link after Sign In button
         function moveForgotPasswordLink() {
             const forgotPasswordLink = document.getElementById('forgotPassword');
@@ -449,6 +621,8 @@
         function improveUI() {
             addInputIcons();
             moveForgotPasswordLink();
+            enhanceLabels();
+            addFloatingLabelEffect();
         }
         
         // Observer to detect when B2C injects content
