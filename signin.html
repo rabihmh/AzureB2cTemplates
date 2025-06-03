@@ -47,8 +47,6 @@
         #api .social {
             padding: 0;
             margin: 0;
-            display: flex;
-            flex-direction: column;
         }
         
         /* Style intro section */
@@ -64,7 +62,6 @@
         /* Entry fields styling */
         #api .entry {
             margin-bottom: 1rem;
-            order: 1;
         }
         
         #api .entry label {
@@ -114,7 +111,6 @@
             margin-bottom: 1rem;
             color: #991B1B;
             font-size: 0.875rem;
-            order: 0;
         }
         
         #api .error p {
@@ -124,8 +120,7 @@
         /* Buttons */
         #api .buttons {
             margin-top: 1.5rem;
-            margin-bottom: 1rem;
-            order: 2;
+            margin-bottom: 1.5rem;
         }
         
         #api button[type="submit"],
@@ -184,42 +179,39 @@
             text-decoration: underline;
         }
         
-        /* Forgot password link - moved after button */
+        /* Forgot password link */
         #api .rememberMe {
-            margin-bottom: 0;
-            order: 3;
-            text-align: center;
-            margin-top: 1rem;
+            margin-bottom: 1rem;
         }
         
         #api .forgot-password {
-            float: none;
-            margin-top: 0;
-            display: inline-block;
-            color: #7d0848ff;
-            font-size: 0.875rem;
+            float: right;
+            margin-top: 0.5rem;
         }
         
-        #api .forgot-password:hover {
-            color: #5a0634;
-        }
-        
-        /* Additional targeting for forgot password links */
-        #api a[href*="forgot"],
-        #api a[href*="password"],
-        #api .rememberMe a {
-            order: 3;
-            margin-top: 1rem;
-            text-align: center;
-            display: block;
+        /* Specific styling for the moved forgot password link */
+        #forgotPassword {
             color: #7d0848ff !important;
-            font-size: 0.875rem;
+            text-decoration: none !important;
+            font-size: 0.875rem !important;
+            font-weight: 500 !important;
+            transition: color 0.2s !important;
+            display: block !important;
+            text-align: center !important;
+            margin-top: 1rem !important;
+            margin-bottom: 0 !important;
         }
         
-        #api a[href*="forgot"]:hover,
-        #api a[href*="password"]:hover,
-        #api .rememberMe a:hover {
+        #forgotPassword:hover {
             color: #5a0634 !important;
+            text-decoration: underline !important;
+        }
+        
+        /* Container for moved forgot password link */
+        .forgot-password-container {
+            text-align: center;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
         }
         
         /* Social identity providers */
@@ -333,6 +325,7 @@
                          alt="Logo" 
                          class="w-80 h-auto">
                 </a>
+                                
                 <!-- Phone SVG Illustration -->
                 <svg width="350" height="350" viewBox="0 0 350 350" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M33.5825 294.844L30.5069 282.723C25.0538 280.414 19.4747 278.414 13.7961 276.732L13.4079 282.365L11.8335 276.159C4.79107 274.148 0 273.263 0 273.263C0 273.263 6.46998 297.853 20.0448 316.653L35.8606 319.429L23.5737 321.2C25.2813 323.253 27.1164 325.196 29.0681 327.019C48.8132 345.333 70.8061 353.736 78.1898 345.787C85.5736 337.838 75.5526 316.547 55.8074 298.235C49.6862 292.557 41.9968 288.001 34.2994 284.415L33.5825 294.844Z" fill="#F2F2F2"/>
@@ -424,11 +417,45 @@
             }
         }
         
+        // Move forgot password link after Sign In button
+        function moveForgotPasswordLink() {
+            const forgotPasswordLink = document.getElementById('forgotPassword');
+            const signInButton = document.querySelector('#api button[type="submit"], #api .buttons button');
+            
+            if (forgotPasswordLink && signInButton && !forgotPasswordLink.dataset.moved) {
+                // Create container for the forgot password link
+                const container = document.createElement('div');
+                container.className = 'forgot-password-container';
+                
+                // Clone the link to avoid any issues with event handlers
+                const movedLink = forgotPasswordLink.cloneNode(true);
+                movedLink.dataset.moved = 'true';
+                
+                // Remove original link
+                forgotPasswordLink.remove();
+                
+                // Add cloned link to container
+                container.appendChild(movedLink);
+                
+                // Insert container after the sign-in button's parent container
+                const buttonContainer = signInButton.closest('.buttons') || signInButton.parentElement;
+                if (buttonContainer && buttonContainer.parentElement) {
+                    buttonContainer.parentElement.insertBefore(container, buttonContainer.nextSibling);
+                }
+            }
+        }
+        
+        // Combined function to run all UI improvements
+        function improveUI() {
+            addInputIcons();
+            moveForgotPasswordLink();
+        }
+        
         // Observer to detect when B2C injects content
         const observer = new MutationObserver((mutations) => {
             mutations.forEach((mutation) => {
                 if (mutation.addedNodes.length) {
-                    setTimeout(addInputIcons, 100);
+                    setTimeout(improveUI, 100);
                 }
             });
         });
@@ -439,8 +466,12 @@
             observer.observe(apiElement, { childList: true, subtree: true });
         }
         
-        // Initial attempt to add icons
-        setTimeout(addInputIcons, 500);
+        // Initial attempt to improve UI
+        setTimeout(improveUI, 500);
+        
+        // Additional checks in case the element loads later
+        setTimeout(improveUI, 1000);
+        setTimeout(improveUI, 2000);
     </script>
 </body>
 </html>
